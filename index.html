@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ====== META & TITLE ====== -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenBite • Health & Fitness</title>
+
+  <!-- ====== FAVICON (change to your file if needed) ====== -->
+  <link rel="icon" type="image/svg+xml" href="Logos/GreenBiteFavi.png">
+
+  <!-- ====== FONTS ====== -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- ====== STYLES & SCRIPT ====== -->
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="script.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4CAF50">
+
+</head>
+<body>
+  <!-- HEADER / NAV -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary">
+      <a class="logo" href="#home" data-route>
+        <!-- replace this with your actual logo file -->
+        <img src="Logos/GreenBite.png" alt="GreenBite Logo" class="logo-img" />
+        <span>GreenBite</span>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" data-route class="active">Home</a></li>
+        <li><a href="#recipes" data-route>Recipes</a></li>
+        <li><a href="#calculator" data-route>Calculator</a></li>
+        <li><a href="#workout" data-route>Workout</a></li>
+        <li><a href="#mindfulness" data-route>Mindfulness</a></li>
+        <li><a href="#contact" data-route>Contact</a></li>
+      </ul>
+
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- HOME -->
+    <section id="home" class="view active" aria-labelledby="hero-title">
+      <div class="hero" role="img" aria-label="Healthy lifestyle background">
+        <div class="hero-inner container">
+          <div class="hero-badge">Eat better • Move more • Stress less</div>
+          <h1 id="hero-title" class="hero-title">
+            <span id="slogan">Eat Well, Live Well</span>
+          </h1>
+          <p class="hero-subtitle">Your daily dose of balanced meals, smart workouts, and a calm mind.</p>
+          <div class="hero-actions">
+            <a href="#recipes" data-route class="btn">Explore Recipes</a>
+            <a href="#workout" data-route class="btn btn-secondary">Build a Workout</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- feature tiles -->
+      <section class="container features" aria-label="Quick features overview">
+        <article class="feature-card">
+          <div class="feature-icon">🥗</div>
+          <h3>Balanced Meals</h3>
+          <p>Discover simple, tasty recipes filtered by your goals.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🏋️</div>
+          <h3>Smart Workouts</h3>
+          <p>Auto-generate plans by body part and equipment.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">🧘</div>
+          <h3>Mindfulness</h3>
+          <p>Breathe, focus, and keep a calm routine with timers.</p>
+        </article>
+      </section>
+
+      <!-- Health Tip placed after cards -->
+      <section class="container tip-section" aria-labelledby="tip-title">
+        <h2 id="tip-title">Health Tip of the Day</h2>
+        <p id="tip" class="tip-text"></p>
+      </section>
+    </section>
+
+    <!-- RECIPES -->
+    <section id="recipes" class="view" aria-labelledby="recipes-title">
+      <div class="container">
+        <h2 id="recipes-title" class="section-title">Healthy Recipes</h2>
+
+        <div class="toolbar" role="search">
+          <label class="sr-only" for="searchInput">Search recipes</label>
+          <input id="searchInput" placeholder="Search recipe..." aria-label="Search recipes" />
+
+          <label class="sr-only" for="categoryFilter">Filter category</label>
+          <select id="categoryFilter" aria-label="Filter by category">
+            <option value="all">All Categories</option>
+            <option value="vegan">Vegan</option>
+            <option value="lowcarb">Low-Carb</option>
+            <option value="highprotein">High Protein</option>
+          </select>
+        </div>
+
+        <div id="recipesContainer" class="grid" aria-live="polite"></div>
+
+        <!-- Recipe Modal -->
+        <div id="recipeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="recipeTitle">
+          <div class="modal-dialog">
+            <button class="close" id="closeModal" aria-label="Close modal">&times;</button>
+            <h3 id="recipeTitle" class="modal-title">Recipe Title</h3>
+            <img id="recipeImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Recipe image" class="modal-image" />
+            <div class="row">
+              <div class="panel">
+                <h4>Ingredients</h4>
+                <ul id="recipeIngredients" class="list"></ul>
+              </div>
+              <div class="panel">
+                <h4>Steps</h4>
+                <ol id="recipeSteps" class="list"></ol>
+              </div>
+            </div>
+            <div class="panel">
+              <h4>Nutrition</h4>
+              <table id="nutritionTable" class="table"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section id="calculator" class="view" aria-labelledby="calc-title">
+      <div class="container">
+        <h2 id="calc-title" class="section-title">Calorie & Nutrition Calculator</h2>
+
+        <div class="panel">
+          <div class="row">
+            <label>Age (years)<input id="age" type="number" min="10" max="100" required></label>
+            <label>Gender
+              <select id="gender"><option>Male</option><option>Female</option></select>
+            </label>
+            <label>Height (cm)<input id="height" type="number" min="100" max="230" required></label>
+            <label>Weight (kg)<input id="weight" type="number" min="30" max="250" required></label>
+            <label>Activity Level
+              <select id="activity">
+                <option value="1.2">Sedentary (little/no exercise)</option>
+                <option value="1.375">Lightly active (1–3 days/week)</option>
+                <option value="1.55">Moderately active (3–5 days/week)</option>
+                <option value="1.725">Very active (6–7 days/week)</option>
+                <option value="1.9">Super active (physical job)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="calcBtn" type="button">Calculate</button>
+            <button class="btn btn-secondary" id="clearCalc" type="button">Clear</button>
+          </div>
+
+          <div id="calcResults" class="results" aria-live="polite">
+            <div class="panel panel-inline">
+              <strong>BMR:</strong> <span id="bmr">—</span> kcal
+              <span class="spacer"></span>
+              <strong>TDEE:</strong> <span id="tdee">—</span> kcal
+            </div>
+
+            <div class="macro-wrap panel">
+              <div class="macro-row">
+                <div>Carbs (50%): <span id="carbsG">—</span> g</div>
+                <div class="bar"><span id="carbsBar"></span></div>
+              </div>
+              <div class="macro-row">
+                <div>Protein (20%): <span id="proteinG">—</span> g</div>
+                <div class="bar"><span id="proteinBar"></span></div>
+              </div>
+              <div class="macro-row">
+                <div>Fat (30%): <span id="fatG">—</span> g</div>
+                <div class="bar"><span id="fatBar"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WORKOUT -->
+    <section id="workout" class="view" aria-labelledby="workout-title">
+      <div class="container">
+        <h2 id="workout-title" class="section-title">Workout Generator</h2>
+
+        <div class="panel">
+          <div class="row">
+            <label>Body Part
+              <select id="bodyPart">
+                <option value="full">Full Body</option>
+                <option value="arms">Arms</option>
+                <option value="legs">Legs</option>
+                <option value="core">Core</option>
+              </select>
+            </label>
+
+            <label>Equipment
+              <select id="equipment">
+                <option value="none">None</option>
+                <option value="dumbbells">Dumbbells</option>
+                <option value="resistance">Resistance Band</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="genWorkout" type="button">Generate Plan</button>
+          </div>
+
+          <div id="plan" class="panel soft" aria-live="polite"></div>
+
+          <div id="timerBox" class="panel timerbox" hidden>
+            <div class="timer-top">
+              <div>Current Exercise: <span id="currentExercise" class="pill">—</span></div>
+              <div class="timer" id="countdown" aria-live="polite">00:30</div>
+            </div>
+            <div class="timer-actions">
+              <button class="btn" id="startTimer" type="button">Start</button>
+              <button class="btn btn-secondary" id="stopTimer" type="button">Stop</button>
+            </div>
+            <audio id="beep">
+              <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg" />
+            </audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MINDFULNESS -->
+    <section id="mindfulness" class="view" aria-labelledby="mind-title">
+      <div class="container">
+        <h2 id="mind-title" class="section-title">Mindfulness</h2>
+
+        <!-- Guided Breathing Animation -->
+        <div class="panel center">
+          <div class="breath-circle" id="breathCircle" aria-hidden="true"></div>
+          <p id="breathLabel" class="pill">Press Start to Breathe</p>
+          <div class="actions center">
+            <button class="btn" id="startBreath">Start</button>
+            <button class="btn btn-secondary" id="stopBreath">Stop</button>
+          </div>
+        </div>
+
+        <!-- Meditation Timer & Ambience -->
+        <div class="panel">
+          <strong>Meditation Timer</strong>
+          <div class="row align-center" style="margin-top:.5rem">
+            <label>Minutes
+              <input id="medMin" type="number" min="1" value="5" />
+            </label>
+            <div class="clock-wrap">
+              <div class="timer" id="medClock">05:00</div>
+              <div class="actions">
+                <button class="btn" id="startMed" type="button">Start</button>
+                <button class="btn btn-secondary" id="stopMed" type="button">Stop</button>
+              </div>
+            </div>
+            <div>
+              Sessions completed: <span id="sessions" class="pill">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <strong>Brown Noise</strong>
+          <div class="actions wrap" style="margin-top:.5rem">
+            <button class="btn" data-sound="rain" type="button">Track 1</button>
+            <button class="btn" data-sound="waves" type="button">Track 2</button>
+            <button class="btn btn-secondary" id="stopAllSounds" type="button">Stop Sounds</button>
+          </div>
+          <audio id="snd-rain" loop src="Audio/brownnoise1.mp3"></audio>
+          <audio id="snd-waves" loop src="Audio/brownnoise2.mp3"></audio>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="view" aria-labelledby="contact-title">
+      <div class="container">
+        <h2 id="contact-title" class="section-title">Contact & Feedback</h2>
+
+        <form id="contactForm" class="grid" novalidate>
+          <label>Name
+            <input id="cName" required placeholder="Your name" />
+          </label>
+          <label>Email
+            <input id="cEmail" type="email" required placeholder="you@example.com" />
+          </label>
+          <label class="span-2">Message
+            <textarea id="cMsg" required placeholder="How can we help?"></textarea>
+          </label>
+          <div class="span-2 actions left">
+            <button class="btn" type="submit">Send</button>
+            <span id="cConfirm" class="pill" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <div class="row" style="margin-top:1rem">
+          <div class="panel">
+            <strong>GreenBite HQ</strong>
+            <iframe 
+            title="GreenBite HQ Map"
+            width="600"
+            height="250"
+            style="border:0; border-radius:12px; width:100%; max-width:100%;"
+            loading="lazy"
+            allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3264.546466728693!2d79.8589429!3d6.917272100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2596c8b7b7d0b%3A0xb544b1b7165c0ad4!2sParkland%20Building%2C%2033%20Level%2012%20Park%20St%2C%20Colombo%2000200!5e1!3m2!1sen!2slk!4v1756961247177!5m2!1sen!2slk">
+            </iframe>
+
+
+          </div>
+
+          <div class="panel">
+            <strong>FAQ</strong>
+            <details>
+              <summary>How long do responses take?</summary>
+              <p>Responses typically would take between 2-3 days!</p>
+            </details>
+            <details>
+              <summary>When can I vist the store?</summary>
+              <p>We are open from 11 AM to 7 PM all week!</p>
+            </details>
+            <details>
+              <summary>Are all recipes safe to make?</summary>
+              <p>Recipes have been prepared by a certified nutritionist!</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (sticky - stays at bottom) -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; 2025 GreenBite</p>
+      <div class="footer-links">
+        <a href="#about">About Us</a>
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+      </div>
+      <form id="newsletterForm" class="newsletter" aria-label="Newsletter">
+        <input type="email" id="emailInput" placeholder="We don't spam!" required />
+        <button type="submit" class="btn">Subscribe</button>
+      </form>
+    </div>
+  </footer>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(() => console.log("✅ Service Worker registered"))
+      .catch(err => console.error("Service Worker failed", err));
+  }
+</script>
+
+</body>
+</html>
