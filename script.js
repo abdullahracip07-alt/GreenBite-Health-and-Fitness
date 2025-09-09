@@ -3,31 +3,40 @@
    calculator, workout generator, breathing and timers.
    ========================================================= */
 
-// Helper - safe get
+// Shortcut function so I don’t have to type document.getElementById all the time
 const $ = id => document.getElementById(id);
 
 /* =========================
    SPA Router + Nav Toggle
    ========================= */
 (function initRouterNav() {
+  // I grab all "view" sections (home, recipes, etc.)
   const views = document.querySelectorAll(".view");
+
+  // This function shows only the correct view when I click a link or change hash
   function showView(hash) {
     const target = (hash && document.querySelector(hash)) ? hash : "#home";
+    // hide all
     views.forEach(v => v.classList.remove("active"));
+    // show current
     document.querySelector(target)?.classList.add("active");
 
+    // Update active nav link
     document.querySelectorAll(".nav-links a").forEach(a => a.classList.remove("active"));
     const navA = document.querySelector(`.nav-links a[href="${target}"]`);
     if (navA) navA.classList.add("active");
 
-    // close mobile nav on route change
-    document.getElementById("navLinks")?.classList.remove("show");
-    document.getElementById("hamburger")?.setAttribute("aria-expanded", "false");
+    // Close the mobile menu when I navigate
+    $("navLinks")?.classList.remove("show");
+    $("hamburger")?.setAttribute("aria-expanded", "false");
   }
+
+  // Listen for hash changes (when I click nav links)
   window.addEventListener("hashchange", () => showView(location.hash));
+  // Show the right section on first load
   showView(location.hash || "#home");
 
-  // mobile nav toggle
+  // Hamburger toggle (for mobile menu)
   const hamburger = $("hamburger");
   const navLinks = $("navLinks");
   if (hamburger && navLinks) {
@@ -40,9 +49,10 @@ const $ = id => document.getElementById(id);
 })();
 
 /* =========================
-   Slogan rotation + tip
+   Slogan rotation + daily tip
    ========================= */
 (function initSloganTip() {
+  // Rotating slogans under the hero title
   const slogans = [
     "Eat Well, Live Well",
     "Fuel Your Body Right",
@@ -58,6 +68,7 @@ const $ = id => document.getElementById(id);
     }, 4500);
   }
 
+  // Random tip of the day
   const tips = [
     "Drink a glass of water first thing in the morning.",
     "Aim for 7–9 hours of sleep tonight.",
@@ -74,6 +85,7 @@ const $ = id => document.getElementById(id);
    RECIPES: data + UI
    ========================= */
 (function initRecipes() {
+  // My recipe database (static for now)
   const recipes = [
     {
       id:1, title: "Avocado Salad", category:"vegan",
@@ -101,6 +113,7 @@ const $ = id => document.getElementById(id);
     }
   ];
 
+  // This renders recipe cards
   function renderRecipes(list) {
     const wrap = $("recipesContainer");
     if (!wrap) return;
@@ -115,13 +128,14 @@ const $ = id => document.getElementById(id);
           <p>${r.description}</p>
           <span class="tag">${r.category}</span>
         </div>`;
+      // Clicking opens modal
       card.addEventListener("click", () => openRecipe(r));
       wrap.appendChild(card);
     });
   }
   renderRecipes(recipes);
 
-  // search/filter
+  // Search and category filter
   const searchEl = $("searchInput");
   const catEl = $("categoryFilter");
   function filterRecipes() {
@@ -136,11 +150,13 @@ const $ = id => document.getElementById(id);
   if (searchEl) searchEl.addEventListener("input", filterRecipes);
   if (catEl) catEl.addEventListener("change", filterRecipes);
 
-  // Modal open/close
+  // Open recipe modal
   function openRecipe(r) {
     $("recipeTitle").textContent = r.title;
     $("recipeImage").src = r.image;
     $("recipeImage").alt = r.title;
+
+    // Ingredients list
     const ing = $("recipeIngredients");
     if (ing) {
       ing.innerHTML = "";
@@ -150,6 +166,8 @@ const $ = id => document.getElementById(id);
         ing.appendChild(li);
       });
     }
+
+    // Steps
     const steps = $("recipeSteps");
     if (steps) {
       steps.innerHTML = "";
@@ -159,6 +177,8 @@ const $ = id => document.getElementById(id);
         steps.appendChild(li);
       });
     }
+
+    // Nutrition table
     const nut = $("nutritionTable");
     if (nut) {
       nut.innerHTML = `
@@ -171,6 +191,7 @@ const $ = id => document.getElementById(id);
     $("recipeModal")?.classList.add("open");
   }
 
+  // Close modal
   $("closeModal")?.addEventListener("click", () => $("recipeModal")?.classList.remove("open"));
   $("recipeModal")?.addEventListener("click", (e) => { if (e.target.id === "recipeModal") $("recipeModal")?.classList.remove("open"); });
 })();
@@ -179,29 +200,24 @@ const $ = id => document.getElementById(id);
    CALCULATOR (BMR/TDEE)
    ========================= */
 (function initCalculator() {
+  // Calculates BMR and TDEE when I click the button
   function calculate() {
-    const ageEl = $("age");
-    const genderEl = $("gender");
-    const heightEl = $("height");
-    const weightEl = $("weight");
-    const activityEl = $("activity");
-    if (!ageEl || !genderEl || !heightEl || !weightEl || !activityEl) return;
-
-    const age = +ageEl.value;
-    const g = genderEl.value;
-    const h = +heightEl.value;
-    const w = +weightEl.value;
-    const act = +activityEl.value;
-
+    const age = +$("age").value;
+    const g = $("gender").value;
+    const h = +$("height").value;
+    const w = +$("weight").value;
+    const act = +$("activity").value;
     if (!age || !h || !w) return;
 
-    // Mifflin-St Jeor
+    // Formula: Mifflin-St Jeor
     const bmr = g === "Male" ? (10*w + 6.25*h - 5*age + 5) : (10*w + 6.25*h - 5*age - 161);
     const tdee = bmr * act;
 
+    // Output numbers
     $("bmr").textContent = Math.round(bmr);
     $("tdee").textContent = Math.round(tdee);
 
+    // Macronutrient split
     const carbs = (tdee * 0.5) / 4;
     const protein = (tdee * 0.2) / 4;
     const fat = (tdee * 0.3) / 9;
@@ -216,6 +232,8 @@ const $ = id => document.getElementById(id);
   }
 
   $("calcBtn")?.addEventListener("click", calculate);
+
+  // Clear all inputs/results
   $("clearCalc")?.addEventListener("click", () => {
     ["age","height","weight"].forEach(id => { if ($(id)) $(id).value = ""; });
     ["bmr","tdee","carbsG","proteinG","fatG"].forEach(id => { if ($(id)) $(id).textContent = "—"; });
@@ -227,144 +245,72 @@ const $ = id => document.getElementById(id);
    WORKOUT GENERATOR & TIMERS
    ========================= */
 (function initWorkout() {
+  // My workout database
   const workouts = {
-    full: [
-      { name: "Jumping Jacks", equipment: ["none","any"] },
-      { name: "Burpees", equipment: ["none","any"] },
-      { name: "Mountain Climbers", equipment: ["none","any"] },
-      { name: "Bodyweight Squats", equipment: ["none","any"] },
-      { name: "Push-ups", equipment: ["none","any"] }
-    ],
-    arms: [
-      { name: "Alternating Dumbbell Curl", equipment: ["dumbbells"] },
-      { name: "Hammer Curl", equipment: ["dumbbells"] },
-      { name: "Overhead Press", equipment: ["dumbbells"] },
-      { name: "Tricep Dips", equipment: ["none","any"] },
-      { name: "Push-ups (Diamond)", equipment: ["none","any"] }
-    ],
-    legs: [
-      { name: "Lunges", equipment: ["none","any"] },
-      { name: "Bodyweight Squats", equipment: ["none","any"] },
-      { name: "Wall Sit", equipment: ["none"] },
-      { name: "Goblet Squat (Dumbbell)", equipment: ["dumbbells"] },
-      { name: "Calf Raises", equipment: ["none","dumbbells"] }
-    ],
-    core: [
-      { name: "Plank", equipment: ["none","any"] },
-      { name: "Leg Raises", equipment: ["none"] },
-      { name: "Russian Twists (bodyweight/dumbbell)", equipment: ["none","dumbbells"] },
-      { name: "Bicycle Crunches", equipment: ["none"] }
-    ]
+    full: [ { name: "Jumping Jacks", equipment: ["none","any"] }, { name: "Burpees", equipment: ["none","any"] } ],
+    arms: [ { name: "Dumbbell Curl", equipment: ["dumbbells"] }, { name: "Tricep Dips", equipment: ["none","any"] } ],
+    legs: [ { name: "Lunges", equipment: ["none","any"] }, { name: "Goblet Squat", equipment: ["dumbbells"] } ],
+    core: [ { name: "Plank", equipment: ["none"] }, { name: "Bicycle Crunches", equipment: ["none"] } ]
   };
 
-  const PLAN_SIZE = 5;
-  const genBtn = $("genWorkout");
+  const PLAN_SIZE = 5; // max exercises per plan
   const planEl = $("plan");
   const timerBox = $("timerBox");
   const currentExerciseEl = $("currentExercise");
-  const startBtn = $("startTimer");
-  const stopBtn = $("stopTimer");
   const countdownEl = $("countdown");
   const beep = $("beep");
+  let countdownTimer = null, remainingSeconds = 30;
 
-  let selectedExerciseName = null;
-  let countdownTimer = null;
-  let remainingSeconds = 30;
-
-  function pickUniqueRandom(source, count) {
-    const src = [...source];
-    for (let i = src.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [src[i], src[j]] = [src[j], src[i]];
-    }
-    return src.slice(0, Math.min(count, src.length));
-  }
-
-  function filterByEquipment(list, equipment) {
-    return list.filter(ex => ex.equipment.includes("any") || ex.equipment.includes(equipment) || (equipment === "none" && ex.equipment.includes("none")));
-  }
-
+  // Generate workout plan
   function renderPlan(body, equipment) {
-    if (!planEl) return;
     const pool = workouts[body] || [];
-    const filtered = filterByEquipment(pool, equipment);
-    const selected = pickUniqueRandom(filtered, PLAN_SIZE);
-
-    if (selected.length === 0) {
-      planEl.innerHTML = `<div class="panel">No exercises found for selected body part & equipment.</div>`;
-      if (timerBox) timerBox.hidden = true;
-      return;
-    }
+    const filtered = pool.filter(ex => ex.equipment.includes("any") || ex.equipment.includes(equipment));
+    const selected = filtered.slice(0, PLAN_SIZE);
 
     const ul = document.createElement("ul");
     ul.className = "exercise-list";
-    selected.forEach((ex) => {
+    selected.forEach(ex => {
       const li = document.createElement("li");
-      li.setAttribute("data-name", ex.name);
       li.innerHTML = `<span>${ex.name}</span><small class="small">${ex.equipment.join(", ")}</small>`;
       li.addEventListener("click", () => {
         document.querySelectorAll(".exercise-list li").forEach(el => el.classList.remove("selected"));
         li.classList.add("selected");
-        selectedExerciseName = ex.name;
-        if (currentExerciseEl) currentExerciseEl.textContent = ex.name;
-        if (timerBox) timerBox.hidden = false;
+        currentExerciseEl.textContent = ex.name;
+        timerBox.hidden = false;
         remainingSeconds = 30;
-        if (countdownEl) countdownEl.textContent = formatTime(remainingSeconds);
+        countdownEl.textContent = formatTime(remainingSeconds);
       });
       ul.appendChild(li);
     });
-
     planEl.innerHTML = `<strong>Your Plan</strong>`;
     planEl.appendChild(ul);
-
-    const firstLi = ul.querySelector("li");
-    if (firstLi) firstLi.click();
   }
 
   function formatTime(n) {
-    const mm = Math.floor(n / 60);
-    const ss = n % 60;
-    return (mm > 0 ? String(mm).padStart(2, "0") + ":" : "00:") + String(ss).padStart(2, "0");
+    return "00:" + String(n).padStart(2, "0");
   }
 
-  genBtn?.addEventListener("click", () => {
+  $("genWorkout")?.addEventListener("click", () => {
     const body = $("bodyPart")?.value || "full";
     const equipment = $("equipment")?.value || "none";
     renderPlan(body, equipment);
   });
 
-  function clearCountdown() {
-    if (countdownTimer) {
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-    }
-  }
-
-  startBtn?.addEventListener("click", () => {
-    if (!selectedExerciseName) {
-      const li = document.querySelector(".exercise-list li");
-      if (li) li.click(); else return;
-    }
-    clearCountdown();
+  // Timer logic
+  $("startTimer")?.addEventListener("click", () => {
+    clearInterval(countdownTimer);
     remainingSeconds = 30;
-    if (countdownEl) countdownEl.textContent = formatTime(remainingSeconds);
+    countdownEl.textContent = formatTime(remainingSeconds);
     countdownTimer = setInterval(() => {
       remainingSeconds--;
-      if (countdownEl) countdownEl.textContent = formatTime(Math.max(0, remainingSeconds));
+      countdownEl.textContent = formatTime(Math.max(0, remainingSeconds));
       if (remainingSeconds <= 0) {
-        clearCountdown();
-        if (beep) {
-          try { beep.currentTime = 0; beep.play(); } catch (err) { /* autoplay guarded */ }
-        }
+        clearInterval(countdownTimer);
+        beep?.play();
       }
     }, 1000);
   });
-
-  stopBtn?.addEventListener("click", () => {
-    clearCountdown();
-    remainingSeconds = 30;
-    if (countdownEl) countdownEl.textContent = formatTime(remainingSeconds);
-  });
+  $("stopTimer")?.addEventListener("click", () => { clearInterval(countdownTimer); countdownEl.textContent = "00:30"; });
 })();
 
 /* =========================
@@ -373,26 +319,21 @@ const $ = id => document.getElementById(id);
 (function initBreathingAndMeditation() {
   const breathCircle = $("breathCircle");
   const breathLabel = $("breathLabel");
-  let breathInterval = null;
-  let phaseIndex = 0;
+  let breathInterval = null, phaseIndex = 0;
 
   const PHASES = [
     { label: "Inhale", duration: 4000 },
-    { label: "Hold",   duration: 4000 },
+    { label: "Hold", duration: 4000 },
     { label: "Exhale", duration: 4000 }
   ];
 
   function setPhaseLabel() {
-    if (!breathLabel) return;
     breathLabel.textContent = PHASES[phaseIndex].label + "...";
   }
 
   function startBreathing() {
-    if (!breathCircle || !breathLabel) return;
     breathCircle.classList.add("breath-running");
-    phaseIndex = 0;
-    setPhaseLabel();
-    if (breathInterval) clearInterval(breathInterval);
+    phaseIndex = 0; setPhaseLabel();
     breathInterval = setInterval(() => {
       phaseIndex = (phaseIndex + 1) % PHASES.length;
       setPhaseLabel();
@@ -400,10 +341,9 @@ const $ = id => document.getElementById(id);
   }
 
   function stopBreathing() {
-    if (!breathCircle || !breathLabel) return;
     breathCircle.classList.remove("breath-running");
     breathLabel.textContent = "Press Start to Breathe";
-    if (breathInterval) { clearInterval(breathInterval); breathInterval = null; }
+    clearInterval(breathInterval);
   }
 
   $("startBreath")?.addEventListener("click", startBreathing);
@@ -422,11 +362,7 @@ const $ = id => document.getElementById(id);
     medInt = setInterval(() => {
       medRemain--;
       updateMedClock();
-      if (medRemain <= 0) {
-        clearInterval(medInt);
-        sessions++;
-        $("sessions").textContent = sessions;
-      }
+      if (medRemain <= 0) { clearInterval(medInt); $("sessions").textContent = ++sessions; }
     }, 1000);
   });
   $("stopMed")?.addEventListener("click", () => { clearInterval(medInt); });
@@ -436,16 +372,12 @@ const $ = id => document.getElementById(id);
    AMBIENCE SOUNDS
    ========================= */
 (function initAmbience() {
-  const sounds = {
-    rain: $("snd-rain"),
-    waves: $("snd-waves")
-  };
-  function stopAllSounds() { Object.values(sounds).forEach(s => { if (s) { s.pause(); s.currentTime = 0; } }); }
+  const sounds = { rain: $("snd-rain"), waves: $("snd-waves") };
+  function stopAllSounds() { Object.values(sounds).forEach(s => { s.pause(); s.currentTime = 0; }); }
   document.querySelectorAll("[data-sound]").forEach(btn => {
     btn.addEventListener("click", () => {
       stopAllSounds();
-      const s = sounds[btn.dataset.sound];
-      if (s) s.play();
+      sounds[btn.dataset.sound]?.play();
     });
   });
   $("stopAllSounds")?.addEventListener("click", stopAllSounds);
@@ -455,21 +387,20 @@ const $ = id => document.getElementById(id);
    FORMS (contact & newsletter)
    ========================= */
 (function initForms() {
-  const contactForm = $("contactForm");
-  contactForm?.addEventListener("submit", (e) => {
+  // Contact form saves locally (mock backend)
+  $("contactForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const name = $("cName").value.trim(), email = $("cEmail").value.trim(), msg = $("cMsg").value.trim();
-    const confirm = $("cConfirm");
-    if (!name || !email || !msg) { if (confirm) confirm.textContent = "Please fill all fields."; return; }
+    if (!name || !email || !msg) { $("cConfirm").textContent = "Please fill all fields."; return; }
     localStorage.setItem("contact", JSON.stringify({ name, email, msg, date: new Date().toISOString() }));
-    if (confirm) confirm.textContent = "Thanks! We'll reply soon.";
-    contactForm.reset();
+    $("cConfirm").textContent = "Thanks! We'll reply soon.";
+    $("contactForm").reset();
   });
 
-  const news = $("newsletterForm");
-  news?.addEventListener("submit", (e) => {
+  // Newsletter saves just the email
+  $("newsletterForm")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const em = $("emailInput").value.trim();
-    if (em) { localStorage.setItem("newsletter", em); alert("Subscribed!"); news.reset(); }
+    if (em) { localStorage.setItem("newsletter", em); alert("Subscribed!"); $("newsletterForm").reset(); }
   });
 })();

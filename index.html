@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ====== META & TITLE ====== -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>GreenBite • Health & Fitness</title>
+  <!-- This sets the HTML document type and language to English -->
 
-  <!-- ====== FAVICON (change to your file if needed) ====== -->
+  <!-- ====== META & TITLE ====== -->
+  <meta charset="UTF-8" /> <!-- I’m setting the character encoding to UTF-8 so all symbols display correctly -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- This makes the page responsive on mobile -->
+  <title>GreenBite • Health & Fitness</title> <!-- This is the page title shown on the browser tab -->
+
+  <!-- ====== FAVICON ====== -->
+  <!-- Here I’m linking my site favicon so it shows on the tab bar -->
   <link rel="icon" type="image/svg+xml" href="Logos/GreenBiteFavi.png">
 
   <!-- ====== FONTS ====== -->
+  <!-- I’m importing Google Fonts (Poppins + Inter) for nice clean text -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- ====== STYLES & SCRIPT ====== -->
+  <!-- Linking my CSS stylesheet -->
   <link rel="stylesheet" href="styles.css" />
+  <!-- Linking my JavaScript file -->
   <script defer src="script.js"></script>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4CAF50">
 
+  <!-- Adding the PWA manifest file so my site can work like an app -->
+  <link rel="manifest" href="manifest.json">
+  <!-- Setting theme color for browser and mobile app look -->
+  <meta name="theme-color" content="#4CAF50">
 </head>
+
 <body>
-  <!-- HEADER / NAV -->
+  <!-- ================= HEADER / NAVIGATION ================= -->
   <header class="site-header">
     <nav class="navbar" aria-label="Primary">
+      <!-- My site logo (image + name text) links back to home -->
       <a class="logo" href="#home" data-route>
-        <!-- replace this with your actual logo file -->
         <img src="Logos/GreenBite.png" alt="GreenBite Logo" class="logo-img" />
         <span>GreenBite</span>
       </a>
 
+      <!-- Navigation links for each section of the site -->
       <ul class="nav-links" id="navLinks">
         <li><a href="#home" data-route class="active">Home</a></li>
         <li><a href="#recipes" data-route>Recipes</a></li>
@@ -38,6 +48,7 @@
         <li><a href="#contact" data-route>Contact</a></li>
       </ul>
 
+      <!-- Hamburger menu button (only shows on mobile) -->
       <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
         <span class="hamburger-bar"></span>
         <span class="hamburger-bar"></span>
@@ -46,17 +57,19 @@
     </nav>
   </header>
 
-  <!-- MAIN -->
+  <!-- ================= MAIN CONTENT ================= -->
   <main>
-    <!-- HOME -->
+    <!-- ===== HOME SECTION ===== -->
     <section id="home" class="view active" aria-labelledby="hero-title">
       <div class="hero" role="img" aria-label="Healthy lifestyle background">
         <div class="hero-inner container">
+          <!-- Catchy slogan badge -->
           <div class="hero-badge">Eat better • Move more • Stress less</div>
           <h1 id="hero-title" class="hero-title">
             <span id="slogan">Eat Well, Live Well</span>
           </h1>
           <p class="hero-subtitle">Your daily dose of balanced meals, smart workouts, and a calm mind.</p>
+          <!-- Buttons to quickly go to recipes or workouts -->
           <div class="hero-actions">
             <a href="#recipes" data-route class="btn">Explore Recipes</a>
             <a href="#workout" data-route class="btn btn-secondary">Build a Workout</a>
@@ -64,7 +77,7 @@
         </div>
       </div>
 
-      <!-- feature tiles -->
+      <!-- Feature tiles (3 main highlights of my website) -->
       <section class="container features" aria-label="Quick features overview">
         <article class="feature-card">
           <div class="feature-icon">🥗</div>
@@ -83,18 +96,19 @@
         </article>
       </section>
 
-      <!-- Health Tip placed after cards -->
+      <!-- Health tip of the day (changes dynamically with JS) -->
       <section class="container tip-section" aria-labelledby="tip-title">
         <h2 id="tip-title">Health Tip of the Day</h2>
         <p id="tip" class="tip-text"></p>
       </section>
     </section>
 
-    <!-- RECIPES -->
+    <!-- ===== RECIPES SECTION ===== -->
     <section id="recipes" class="view" aria-labelledby="recipes-title">
       <div class="container">
         <h2 id="recipes-title" class="section-title">Healthy Recipes</h2>
 
+        <!-- Search and filter toolbar -->
         <div class="toolbar" role="search">
           <label class="sr-only" for="searchInput">Search recipes</label>
           <input id="searchInput" placeholder="Search recipe..." aria-label="Search recipes" />
@@ -108,13 +122,15 @@
           </select>
         </div>
 
+        <!-- Recipes will be displayed here with JS -->
         <div id="recipesContainer" class="grid" aria-live="polite"></div>
 
-        <!-- Recipe Modal -->
+        <!-- Recipe modal (opens when a recipe is clicked) -->
         <div id="recipeModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="recipeTitle">
           <div class="modal-dialog">
             <button class="close" id="closeModal" aria-label="Close modal">&times;</button>
             <h3 id="recipeTitle" class="modal-title">Recipe Title</h3>
+            <!-- Placeholder image (JS will replace this src) -->
             <img id="recipeImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Recipe image" class="modal-image" />
             <div class="row">
               <div class="panel">
@@ -135,12 +151,13 @@
       </div>
     </section>
 
-    <!-- CALCULATOR -->
+    <!-- ===== CALCULATOR SECTION ===== -->
     <section id="calculator" class="view" aria-labelledby="calc-title">
       <div class="container">
         <h2 id="calc-title" class="section-title">Calorie & Nutrition Calculator</h2>
 
         <div class="panel">
+          <!-- Input form for user data -->
           <div class="row">
             <label>Age (years)<input id="age" type="number" min="10" max="100" required></label>
             <label>Gender
@@ -159,11 +176,13 @@
             </label>
           </div>
 
+          <!-- Buttons for calculating or clearing -->
           <div class="actions">
             <button class="btn" id="calcBtn" type="button">Calculate</button>
             <button class="btn btn-secondary" id="clearCalc" type="button">Clear</button>
           </div>
 
+          <!-- Results area (BMR, TDEE, macros) -->
           <div id="calcResults" class="results" aria-live="polite">
             <div class="panel panel-inline">
               <strong>BMR:</strong> <span id="bmr">—</span> kcal
@@ -190,12 +209,13 @@
       </div>
     </section>
 
-    <!-- WORKOUT -->
+    <!-- ===== WORKOUT SECTION ===== -->
     <section id="workout" class="view" aria-labelledby="workout-title">
       <div class="container">
         <h2 id="workout-title" class="section-title">Workout Generator</h2>
 
         <div class="panel">
+          <!-- Select workout type and equipment -->
           <div class="row">
             <label>Body Part
               <select id="bodyPart">
@@ -215,12 +235,15 @@
             </label>
           </div>
 
+          <!-- Button to generate workout plan -->
           <div class="actions">
             <button class="btn" id="genWorkout" type="button">Generate Plan</button>
           </div>
 
+          <!-- Area where the workout plan appears -->
           <div id="plan" class="panel soft" aria-live="polite"></div>
 
+          <!-- Timer box for exercises -->
           <div id="timerBox" class="panel timerbox" hidden>
             <div class="timer-top">
               <div>Current Exercise: <span id="currentExercise" class="pill">—</span></div>
@@ -230,6 +253,7 @@
               <button class="btn" id="startTimer" type="button">Start</button>
               <button class="btn btn-secondary" id="stopTimer" type="button">Stop</button>
             </div>
+            <!-- Beep sound when timer ends -->
             <audio id="beep">
               <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg" />
             </audio>
@@ -238,12 +262,12 @@
       </div>
     </section>
 
-    <!-- MINDFULNESS -->
+    <!-- ===== MINDFULNESS SECTION ===== -->
     <section id="mindfulness" class="view" aria-labelledby="mind-title">
       <div class="container">
         <h2 id="mind-title" class="section-title">Mindfulness</h2>
 
-        <!-- Guided Breathing Animation -->
+        <!-- Breathing animation -->
         <div class="panel center">
           <div class="breath-circle" id="breathCircle" aria-hidden="true"></div>
           <p id="breathLabel" class="pill">Press Start to Breathe</p>
@@ -253,7 +277,7 @@
           </div>
         </div>
 
-        <!-- Meditation Timer & Ambience -->
+        <!-- Meditation timer -->
         <div class="panel">
           <strong>Meditation Timer</strong>
           <div class="row align-center" style="margin-top:.5rem">
@@ -273,6 +297,7 @@
           </div>
         </div>
 
+        <!-- Ambient sounds -->
         <div class="panel">
           <strong>Brown Noise</strong>
           <div class="actions wrap" style="margin-top:.5rem">
@@ -286,11 +311,12 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
+    <!-- ===== CONTACT SECTION ===== -->
     <section id="contact" class="view" aria-labelledby="contact-title">
       <div class="container">
         <h2 id="contact-title" class="section-title">Contact & Feedback</h2>
 
+        <!-- Contact form -->
         <form id="contactForm" class="grid" novalidate>
           <label>Name
             <input id="cName" required placeholder="Your name" />
@@ -307,21 +333,21 @@
           </div>
         </form>
 
+        <!-- Map and FAQ side by side -->
         <div class="row" style="margin-top:1rem">
           <div class="panel">
             <strong>GreenBite HQ</strong>
+            <!-- Embedded Google Map -->
             <iframe 
-            title="GreenBite HQ Map"
-            width="600"
-            height="250"
-            style="border:0; border-radius:12px; width:100%; max-width:100%;"
-            loading="lazy"
-            allowfullscreen
-            referrerpolicy="no-referrer-when-downgrade"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3264.546466728693!2d79.8589429!3d6.917272100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2596c8b7b7d0b%3A0xb544b1b7165c0ad4!2sParkland%20Building%2C%2033%20Level%2012%20Park%20St%2C%20Colombo%2000200!5e1!3m2!1sen!2slk!4v1756961247177!5m2!1sen!2slk">
+              title="GreenBite HQ Map"
+              width="600"
+              height="250"
+              style="border:0; border-radius:12px; width:100%; max-width:100%;"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3264.546466728693!2d79.8589429!3d6.917272100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2596c8b7b7d0b%3A0xb544b1b7165c0ad4!2sParkland%20Building%2C%2033%20Level%2012%20Park%20St%2C%20Colombo%2000200!5e1!3m2!1sen!2slk!4v1757390481062!5m2!1sen!2slk">
             </iframe>
-
-
           </div>
 
           <div class="panel">
@@ -331,7 +357,7 @@
               <p>Responses typically would take between 2-3 days!</p>
             </details>
             <details>
-              <summary>When can I vist the store?</summary>
+              <summary>When can I visit the store?</summary>
               <p>We are open from 11 AM to 7 PM all week!</p>
             </details>
             <details>
@@ -344,7 +370,7 @@
     </section>
   </main>
 
-  <!-- FOOTER (sticky - stays at bottom) -->
+  <!-- ================= FOOTER ================= -->
   <footer class="site-footer">
     <div class="container footer-inner">
       <p>&copy; 2025 GreenBite</p>
@@ -353,6 +379,7 @@
         <a href="#privacy">Privacy Policy</a>
         <a href="#terms">Terms of Service</a>
       </div>
+      <!-- Newsletter subscription form -->
       <form id="newsletterForm" class="newsletter" aria-label="Newsletter">
         <input type="email" id="emailInput" placeholder="We don't spam!" required />
         <button type="submit" class="btn">Subscribe</button>
@@ -360,13 +387,13 @@
     </div>
   </footer>
 
+  <!-- Registering the service worker for PWA support -->
   <script>
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js")
       .then(() => console.log("✅ Service Worker registered"))
       .catch(err => console.error("Service Worker failed", err));
   }
-</script>
-
+  </script>
 </body>
 </html>
