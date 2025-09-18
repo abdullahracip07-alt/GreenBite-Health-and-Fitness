@@ -447,3 +447,12 @@ const $ = id => document.getElementById(id);
     if (em) { localStorage.setItem("newsletter", em); alert("Subscribed!"); $("newsletterForm").reset(); }
   });
 })();
+
+
+card.innerHTML = `
+  <img src="${r.image}" alt="${r.title}">
+  <div class="body">
+    <h3>${r.title}</h3>
+    <p>${r.description}</p>
+    <span class="tag ${r.category}">${r.category}</span>
+  </div>`;

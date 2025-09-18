@@ -242,3 +242,17 @@ textarea { min-height:110px; resize:vertical; }
   height: 1px;
   overflow: hidden;
 }
+
+
+/* Recipe Category Tag Styling */
+.tag {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: #e6f5e6;  /* soft green background */
+  color: #2e7d32;             /* darker green text */
+  text-transform: capitalize;
+}
