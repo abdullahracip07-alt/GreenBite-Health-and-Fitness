@@ -128,13 +128,38 @@ input, select, textarea { width:100%; padding:.65rem .75rem; border-radius:10px;
 textarea { min-height:110px; resize:vertical; }
 
 /* =========================================================
-   CARDS & MODALS
+   RECIPE CARDS (fixed image zoom issue)
    ========================================================= */
-.card { border-radius: var(--radius); overflow:hidden; box-shadow:var(--shadow); background:var(--card); transition:transform .15s; cursor:pointer; }
-.card img { width:100%; height:160px; object-fit:cover; display:block; }
-.card .body { padding:.85rem; display:grid; gap:.35rem; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 14px 34px rgba(2,6,23,.12); }
-.tag { display:inline-block; margin-top:.35rem; font-weight:700; font-size:.75rem; padding:.25rem .5rem; border-radius:999px; background: #eef7f1; color: var(--brand-600); }
+
+/* I’m setting all recipe images to the same size so the grid looks neat */
+.card img {
+  width: 100%;          /* take full card width */
+  height: 200px;        /* taller so images don’t look overly cropped */
+  object-fit: cover;    /* keeps proportions but trims edges neatly */
+  border-radius: 8px;   /* smooth rounded corners for modern look */
+  display: block;       /* removes any inline spacing issues */
+  transition: transform 0.3s ease; /* smooth hover zoom */
+}
+
+/* When I hover over a card, I want a subtle zoom effect for aesthetics */
+.card:hover img {
+  transform: scale(1.05);
+}
+
+/* =========================================================
+   RECIPE MODAL IMAGE (clean consistent style)
+   ========================================================= */
+
+/* I’m making sure the modal recipe image looks neat and not stretched */
+.modal-image {
+  width: 100%;          /* take full width of modal container */
+  max-height: 320px;    /* prevent it from being too tall */
+  object-fit: contain;  /* show the whole dish without awkward cropping */
+  border-radius: 10px;  /* smooth rounded corners for a polished feel */
+  margin-bottom: 1rem;  /* spacing under the image */
+  display: block;       /* ensures no weird inline gaps */
+}
+
 
 /* Modal styles */
 .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background: rgba(2,6,23,.55); z-index:50; padding:1rem; }
@@ -209,11 +234,11 @@ textarea { min-height:110px; resize:vertical; }
   .hamburger { display:block; }
 }
 
-/* =========================================================
-   MISC SMALL UTILITIES
-   ========================================================= */
-.pill { display:inline-block; padding:.25rem .6rem; border-radius:999px; background:#eef2f7; color:#111827; font-weight:600; }
-.small { font-size:.9rem; color:var(--muted); }
-
-/* Ensures anchored links scroll nicely under sticky header */
-[id] { scroll-margin-top: 84px; }
+/* I added this helper so I can hide labels visually but keep them accessible */
+.visually-hidden {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

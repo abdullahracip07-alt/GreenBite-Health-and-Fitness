@@ -247,11 +247,54 @@ const $ = id => document.getElementById(id);
 (function initWorkout() {
   // My workout database
   const workouts = {
-    full: [ { name: "Jumping Jacks", equipment: ["none","any"] }, { name: "Burpees", equipment: ["none","any"] } ],
-    arms: [ { name: "Dumbbell Curl", equipment: ["dumbbells"] }, { name: "Tricep Dips", equipment: ["none","any"] } ],
-    legs: [ { name: "Lunges", equipment: ["none","any"] }, { name: "Goblet Squat", equipment: ["dumbbells"] } ],
-    core: [ { name: "Plank", equipment: ["none"] }, { name: "Bicycle Crunches", equipment: ["none"] } ]
+    full: [
+      { name: "Jumping Jacks", equipment: ["none","any"] },
+      { name: "Burpees", equipment: ["none","any"] },
+      { name: "Mountain Climbers", equipment: ["none","any"] },
+      { name: "Bodyweight Squats", equipment: ["none","any"] },
+      { name: "Push-ups", equipment: ["none","any"] },
+      { name: "High Knees", equipment: ["none","any"] },
+      { name: "Kettlebell Swings", equipment: ["dumbbells"] },
+      { name: "Resistance Band Rows", equipment: ["resistance"] }
+    ],
+
+     arms: [
+      { name: "Alternating Dumbbell Curl", equipment: ["dumbbells"] },
+      { name: "Hammer Curl", equipment: ["dumbbells"] },
+      { name: "Overhead Press", equipment: ["dumbbells"] },
+      { name: "Lateral Raises", equipment: ["dumbbells"] },
+      { name: "Front Raises", equipment: ["dumbbells"] },
+      { name: "Tricep Dips", equipment: ["none","any"] },
+      { name: "Push-ups (Diamond)", equipment: ["none","any"] },
+      { name: "Resistance Band Bicep Curl", equipment: ["resistance"] },
+      { name: "Resistance Band Tricep Pushdown", equipment: ["resistance"] }
+    ],
+
+    legs: [
+      { name: "Lunges", equipment: ["none","any"] },
+      { name: "Bodyweight Squats", equipment: ["none","any"] },
+      { name: "Wall Sit", equipment: ["none"] },
+      { name: "Step-Ups", equipment: ["none"] },
+      { name: "Glute Bridges", equipment: ["none"] },
+      { name: "Goblet Squat (Dumbbell)", equipment: ["dumbbells"] },
+      { name: "Dumbbell Deadlift", equipment: ["dumbbells"] },
+      { name: "Calf Raises", equipment: ["none","dumbbells"] },
+      { name: "Resistance Band Squats", equipment: ["resistance"] },
+      { name: "Resistance Band Side Steps", equipment: ["resistance"] }
+    ],
+
+      core: [
+      { name: "Plank", equipment: ["none","any"] },
+      { name: "Leg Raises", equipment: ["none"] },
+      { name: "Russian Twists (bodyweight/dumbbell)", equipment: ["none","dumbbells"] },
+      { name: "Bicycle Crunches", equipment: ["none"] },
+      { name: "Flutter Kicks", equipment: ["none"] },
+      { name: "Dumbbell Side Bend", equipment: ["dumbbells"] },
+      { name: "Resistance Band Pallof Press", equipment: ["resistance"] },
+      { name: "Mountain Climbers", equipment: ["none"] }
+    ]
   };
+
 
   const PLAN_SIZE = 5; // max exercises per plan
   const planEl = $("plan");

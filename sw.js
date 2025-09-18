@@ -1,4 +1,4 @@
-//copy into assignment code and manifest.json too.
+//pwa code
 
 const CACHE_NAME = 'wdos-pwa-v1';
 const ASSETS = [

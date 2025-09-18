@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- This sets the HTML document type and language to English -->
 
   <!-- ====== META & TITLE ====== -->
   <meta charset="UTF-8" /> <!-- I’m setting the character encoding to UTF-8 so all symbols display correctly -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- This makes the page responsive on mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- This makes the page responsive on mobile -->
   <title>GreenBite • Health & Fitness</title> <!-- This is the page title shown on the browser tab -->
 
   <!-- ====== FAVICON ====== -->
@@ -14,7 +16,9 @@
 
   <!-- ====== FONTS ====== -->
   <!-- I’m importing Google Fonts (Poppins + Inter) for nice clean text -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <!-- ====== STYLES & SCRIPT ====== -->
   <!-- Linking my CSS stylesheet -->
@@ -131,7 +135,8 @@
             <button class="close" id="closeModal" aria-label="Close modal">&times;</button>
             <h3 id="recipeTitle" class="modal-title">Recipe Title</h3>
             <!-- Placeholder image (JS will replace this src) -->
-            <img id="recipeImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Recipe image" class="modal-image" />
+            <img id="recipeImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+              alt="Recipe image" class="modal-image" />
             <div class="row">
               <div class="panel">
                 <h4>Ingredients</h4>
@@ -161,7 +166,10 @@
           <div class="row">
             <label>Age (years)<input id="age" type="number" min="10" max="100" required></label>
             <label>Gender
-              <select id="gender"><option>Male</option><option>Female</option></select>
+              <select id="gender">
+                <option>Male</option>
+                <option>Female</option>
+              </select>
             </label>
             <label>Height (cm)<input id="height" type="number" min="100" max="230" required></label>
             <label>Weight (kg)<input id="weight" type="number" min="30" max="250" required></label>
@@ -318,13 +326,14 @@
 
         <!-- Contact form -->
         <form id="contactForm" class="grid" novalidate>
-          <label>Name
+          <!-- I fixed this by keeping inline labels but adding 'for' attributes -->
+          <label for="cName">Name
             <input id="cName" required placeholder="Your name" />
           </label>
-          <label>Email
+          <label for="cEmail">Email
             <input id="cEmail" type="email" required placeholder="you@example.com" />
           </label>
-          <label class="span-2">Message
+          <label for="cMsg" class="span-2">Message
             <textarea id="cMsg" required placeholder="How can we help?"></textarea>
           </label>
           <div class="span-2 actions left">
@@ -333,18 +342,14 @@
           </div>
         </form>
 
+
         <!-- Map and FAQ side by side -->
         <div class="row" style="margin-top:1rem">
           <div class="panel">
             <strong>GreenBite HQ</strong>
             <!-- Embedded Google Map -->
-            <iframe 
-              title="GreenBite HQ Map"
-              width="600"
-              height="250"
-              style="border:0; border-radius:12px; width:100%; max-width:100%;"
-              loading="lazy"
-              allowfullscreen
+            <iframe title="GreenBite HQ Map" width="600" height="250"
+              style="border:0; border-radius:12px; width:100%; max-width:100%;" loading="lazy" allowfullscreen
               referrerpolicy="no-referrer-when-downgrade"
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3264.546466728693!2d79.8589429!3d6.917272100000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2596c8b7b7d0b%3A0xb544b1b7165c0ad4!2sParkland%20Building%2C%2033%20Level%2012%20Park%20St%2C%20Colombo%2000200!5e1!3m2!1sen!2slk!4v1757390481062!5m2!1sen!2slk">
             </iframe>
@@ -381,19 +386,23 @@
       </div>
       <!-- Newsletter subscription form -->
       <form id="newsletterForm" class="newsletter" aria-label="Newsletter">
+        <!-- I added a hidden label so WAVE passes but the layout looks the same -->
+        <label for="emailInput" class="visually-hidden">Email address</label>
         <input type="email" id="emailInput" placeholder="We don't spam!" required />
         <button type="submit" class="btn">Subscribe</button>
       </form>
+
     </div>
   </footer>
 
   <!-- Registering the service worker for PWA support -->
   <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js")
-      .then(() => console.log("✅ Service Worker registered"))
-      .catch(err => console.error("Service Worker failed", err));
-  }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js")
+        .then(() => console.log("✅ Service Worker registered"))
+        .catch(err => console.error("Service Worker failed", err));
+    }
   </script>
 </body>
+
 </html>
