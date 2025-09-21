@@ -195,10 +195,22 @@ textarea { min-height:110px; resize:vertical; }
 .timer { font-weight:700; font-family:Poppins, sans-serif; font-size:1.5rem; text-align:center; }
 
 /* =========================================================
-   BREATHING ANIMATION
+   BREATHING ANIMATION (my custom guided breathing cycle)
    ========================================================= */
-.breath-circle { width:140px; height:140px; border-radius:50%; margin:0 auto 0.75rem; background: radial-gradient(circle, var(--brand), var(--brand-600)); box-shadow: 0 8px 30px rgba(2,6,23,.12); transform:scale(1); transition: transform 1.5s ease-in-out; }
-.breath-running { animation: breathe-cycle 12s linear infinite; }
+.breath-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 0.75rem;
+  background: radial-gradient(circle, var(--brand), var(--brand-600));
+  box-shadow: 0 8px 30px rgba(2,6,23,.12);
+  transform: scale(1);
+  transition: transform 1.5s ease-in-out;
+}
+
+.breath-running {
+  animation: breathe-cycle 12s linear infinite;
+}
 
 @keyframes breathe-cycle {
   0%   { transform: scale(1); }
@@ -208,7 +220,7 @@ textarea { min-height:110px; resize:vertical; }
   100% { transform: scale(1); }
 }
 
-/* For accessibility: disable animation if user prefers reduced motion */
+/* Respect user accessibility setting */
 @media (prefers-reduced-motion: reduce) {
   .breath-running { animation: none; }
 }

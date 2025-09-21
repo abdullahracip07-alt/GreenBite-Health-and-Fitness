@@ -390,6 +390,45 @@ document.getElementById("stopMed").addEventListener("click", () => {
 });
 
 /* =========================
+   GUIDED BREATHING (my mindful breathing exercise)
+   ========================= */
+(function initBreathing() {
+  const breathCircle = document.getElementById("breathCircle");
+  const breathLabel = document.getElementById("breathLabel");
+  let breathInterval = null;
+  let phaseIndex = 0;
+
+  const PHASES = [
+    { label: "Inhale", duration: 4000 },
+    { label: "Hold",   duration: 4000 },
+    { label: "Exhale", duration: 4000 }
+  ];
+
+  function setPhaseLabel() {
+    breathLabel.textContent = PHASES[phaseIndex].label + "...";
+  }
+
+  document.getElementById("startBreath").addEventListener("click", () => {
+    breathCircle.classList.add("breath-running");
+    phaseIndex = 0;
+    setPhaseLabel();
+    if (breathInterval) clearInterval(breathInterval);
+    breathInterval = setInterval(() => {
+      phaseIndex = (phaseIndex + 1) % PHASES.length;
+      setPhaseLabel();
+    }, 4000);
+  });
+
+  document.getElementById("stopBreath").addEventListener("click", () => {
+    breathCircle.classList.remove("breath-running");
+    breathLabel.textContent = "Press Start to Breathe";
+    clearInterval(breathInterval);
+    breathInterval = null;
+  });
+})();
+
+
+/* =========================
    AMBIENCE SOUNDS
    ========================= */
 (function initAmbience() {
@@ -434,3 +473,5 @@ card.innerHTML = `
     <p>${r.description}</p>
     <span class="tag ${r.category}">${r.category}</span>
   </div>`;
+
+  
