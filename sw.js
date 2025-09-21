@@ -1,6 +1,6 @@
 //pwa code
 
-const CACHE_NAME = 'wdos-pwa-v1';
+const CACHE_NAME = 'greenbite-pwa-v1';
 const ASSETS = [
   'index.html',
   'styles.css',
