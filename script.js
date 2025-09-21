@@ -239,6 +239,26 @@ document.getElementById("calcBtn").addEventListener("click", () => {
   document.getElementById("fatBar").style.width = "30%";
 });
 
+// ✅ Clear button logic
+$("clearCalc")?.addEventListener("click", () => {
+  // reset all inputs
+  ["age", "height", "weight"].forEach(id => {
+    if ($(id)) $(id).value = "";
+  });
+  $("gender").selectedIndex = 0;
+  $("activity").selectedIndex = 0;
+
+  // reset results
+  ["bmr","tdee","carbsG","proteinG","fatG"].forEach(id => {
+    if ($(id)) $(id).textContent = "—";
+  });
+
+  // reset progress bars
+  ["carbsBar","proteinBar","fatBar"].forEach(id => {
+    if ($(id)) $(id).style.width = "0%";
+  });
+});
+
 
 /* =========================
    WORKOUT GENERATOR & TIMERS
