@@ -196,50 +196,49 @@ const $ = id => document.getElementById(id);
   $("recipeModal")?.addEventListener("click", (e) => { if (e.target.id === "recipeModal") $("recipeModal")?.classList.remove("open"); });
 })();
 
-/* =========================
-   CALCULATOR (BMR/TDEE)
-   ========================= */
-(function initCalculator() {
-  // Calculates BMR and TDEE when I click the button
-  function calculate() {
-    const age = +$("age").value;
-    const g = $("gender").value;
-    const h = +$("height").value;
-    const w = +$("weight").value;
-    const act = +$("activity").value;
-    if (!age || !h || !w) return;
+// ================== CALORIE CALCULATOR ==================
+document.getElementById("calcBtn").addEventListener("click", () => {
+  const age = parseInt(document.getElementById("age").value);
+  const height = parseInt(document.getElementById("height").value);
+  const weight = parseInt(document.getElementById("weight").value);
+  const gender = document.getElementById("gender").value;
+  const activity = parseFloat(document.getElementById("activity").value);
 
-    // Formula: Mifflin-St Jeor
-    const bmr = g === "Male" ? (10*w + 6.25*h - 5*age + 5) : (10*w + 6.25*h - 5*age - 161);
-    const tdee = bmr * act;
-
-    // Output numbers
-    $("bmr").textContent = Math.round(bmr);
-    $("tdee").textContent = Math.round(tdee);
-
-    // Macronutrient split
-    const carbs = (tdee * 0.5) / 4;
-    const protein = (tdee * 0.2) / 4;
-    const fat = (tdee * 0.3) / 9;
-
-    $("carbsG").textContent = Math.round(carbs);
-    $("proteinG").textContent = Math.round(protein);
-    $("fatG").textContent = Math.round(fat);
-
-    $("carbsBar").style.width = Math.min(100, carbs / 5) + "%";
-    $("proteinBar").style.width = Math.min(100, protein / 3) + "%";
-    $("fatBar").style.width = Math.min(100, fat / 2) + "%";
+  // ✅ Input validation (stop negatives or invalid entries)
+  if (isNaN(age) || isNaN(height) || isNaN(weight) || age <= 0 || height <= 0 || weight <= 0) {
+    alert("❌ Please enter valid positive values for Age, Height, and Weight.");
+    return; // stop further execution
   }
 
-  $("calcBtn")?.addEventListener("click", calculate);
+  // BMR calculation (Mifflin-St Jeor)
+  let bmr;
+  if (gender === "Male") {
+    bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+  } else {
+    bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+  }
 
-  // Clear all inputs/results
-  $("clearCalc")?.addEventListener("click", () => {
-    ["age","height","weight"].forEach(id => { if ($(id)) $(id).value = ""; });
-    ["bmr","tdee","carbsG","proteinG","fatG"].forEach(id => { if ($(id)) $(id).textContent = "—"; });
-    ["carbsBar","proteinBar","fatBar"].forEach(id => { if ($(id)) $(id).style.width = 0; });
-  });
-})();
+  const tdee = bmr * activity;
+
+  // Update results in UI
+  document.getElementById("bmr").textContent = Math.round(bmr);
+  document.getElementById("tdee").textContent = Math.round(tdee);
+
+  // Macros (50/20/30 split)
+  const carbs = Math.round((tdee * 0.5) / 4);
+  const protein = Math.round((tdee * 0.2) / 4);
+  const fat = Math.round((tdee * 0.3) / 9);
+
+  document.getElementById("carbsG").textContent = carbs;
+  document.getElementById("proteinG").textContent = protein;
+  document.getElementById("fatG").textContent = fat;
+
+  // Update progress bars
+  document.getElementById("carbsBar").style.width = "50%";
+  document.getElementById("proteinBar").style.width = "20%";
+  document.getElementById("fatBar").style.width = "30%";
+});
+
 
 /* =========================
    WORKOUT GENERATOR & TIMERS
@@ -356,60 +355,39 @@ const $ = id => document.getElementById(id);
   $("stopTimer")?.addEventListener("click", () => { clearInterval(countdownTimer); countdownEl.textContent = "00:30"; });
 })();
 
-/* =========================
-   GUIDED BREATHING & MEDITATION
-   ========================= */
-(function initBreathingAndMeditation() {
-  const breathCircle = $("breathCircle");
-  const breathLabel = $("breathLabel");
-  let breathInterval = null, phaseIndex = 0;
+// ================== MEDITATION TIMER ==================
+let medInterval;
+document.getElementById("startMed").addEventListener("click", () => {
+  const minutes = parseInt(document.getElementById("medMin").value);
 
-  const PHASES = [
-    { label: "Inhale", duration: 4000 },
-    { label: "Hold", duration: 4000 },
-    { label: "Exhale", duration: 4000 }
-  ];
-
-  function setPhaseLabel() {
-    breathLabel.textContent = PHASES[phaseIndex].label + "...";
+  // ✅ Input validation
+  if (isNaN(minutes) || minutes <= 0) {
+    alert("❌ Please enter a valid number of minutes greater than 0.");
+    return;
   }
 
-  function startBreathing() {
-    breathCircle.classList.add("breath-running");
-    phaseIndex = 0; setPhaseLabel();
-    breathInterval = setInterval(() => {
-      phaseIndex = (phaseIndex + 1) % PHASES.length;
-      setPhaseLabel();
-    }, 4000);
-  }
+  let time = minutes * 60;
+  clearInterval(medInterval);
 
-  function stopBreathing() {
-    breathCircle.classList.remove("breath-running");
-    breathLabel.textContent = "Press Start to Breathe";
-    clearInterval(breathInterval);
-  }
+  medInterval = setInterval(() => {
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+    document.getElementById("medClock").textContent =
+      String(min).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
 
-  $("startBreath")?.addEventListener("click", startBreathing);
-  $("stopBreath")?.addEventListener("click", stopBreathing);
+    if (time <= 0) {
+      clearInterval(medInterval);
+      document.getElementById("sessions").textContent =
+        parseInt(document.getElementById("sessions").textContent) + 1;
+      alert("✅ Session complete!");
+    }
+    time--;
+  }, 1000);
+});
 
-  // Meditation timer
-  let medInt = null, medRemain = 300, sessions = 0;
-  function updateMedClock() {
-    const m = Math.floor(medRemain / 60), s = medRemain % 60;
-    $("medClock").textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
-  }
-  $("startMed")?.addEventListener("click", () => {
-    medRemain = (+$("medMin").value || 5) * 60;
-    updateMedClock();
-    clearInterval(medInt);
-    medInt = setInterval(() => {
-      medRemain--;
-      updateMedClock();
-      if (medRemain <= 0) { clearInterval(medInt); $("sessions").textContent = ++sessions; }
-    }, 1000);
-  });
-  $("stopMed")?.addEventListener("click", () => { clearInterval(medInt); });
-})();
+document.getElementById("stopMed").addEventListener("click", () => {
+  clearInterval(medInterval);
+});
 
 /* =========================
    AMBIENCE SOUNDS
